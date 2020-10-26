@@ -18,7 +18,6 @@ class LoopThread(Thread):
 
   def run(self):
     while not self.stopped.wait(3):
-      print("my thread")
       if self.db == None:
         self.db = DB(BOOK_DEPTH)
       for name in EXCHANGES:

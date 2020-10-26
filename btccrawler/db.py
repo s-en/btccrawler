@@ -19,7 +19,7 @@ class DB:
 
     def connect(self, date):
         self.close()
-        self.conn = sqlite3.connect(f'{date}.db')
+        self.conn = sqlite3.connect(f'dblogs/{date}.db')
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
         str = ''
