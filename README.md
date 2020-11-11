@@ -1,1 +1,5 @@
 # btccrawler
+
+```
+python -m btccrawler
+```

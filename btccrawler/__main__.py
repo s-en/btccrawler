@@ -18,14 +18,18 @@ class LoopThread(Thread):
 
   def run(self):
     while not self.stopped.wait(3):
-      if self.db == None:
-        self.db = DB(BOOK_DEPTH)
-      for name in EXCHANGES:
-        book = self.exchanges[name].fetch_order_book('BTC/JPY')
-        asks = book['asks'][0:BOOK_DEPTH]
-        bids = book['bids'][0:BOOK_DEPTH]
-        unix = datetime.now().timestamp()
-        self.db.save(name, unix, asks, bids)
+      try:
+        if self.db == None:
+          self.db = DB(BOOK_DEPTH)
+        for name in EXCHANGES:
+          book = self.exchanges[name].fetch_order_book('BTC/JPY')
+          asks = book['asks'][0:BOOK_DEPTH]
+          bids = book['bids'][0:BOOK_DEPTH]
+          unix = datetime.now().timestamp()
+          self.db.save(name, unix, asks, bids)
+      except Exception:
+        # retry when error
+        self.db = None
 
 if __name__ == "__main__":
   stopFlag = Event()
